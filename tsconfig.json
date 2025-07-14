@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "@business-capabilities/*": ["src/business-capabilities/*"],
+      "@authentication-security/*": ["src/business-capabilities/authentication-security/*"],
+      "@notification-management/*": ["src/business-capabilities/notification-management/*"],
+      "@order-management/*": ["src/business-capabilities/order-management/*"],
+      "@product-management/*": ["src/business-capabilities/product-management/*"],
+      "@user-management/*": ["src/business-capabilities/user-management/*"],
+      "@data-sentinel/*": ["src/business-capabilities/data-sentinel/*"],
+      "@shared/*": ["src/shared/*"],
+      "@modules/*": ["src/modules/*"]
+    },
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false
+  }
+}

@@ -1,0 +1,17 @@
+TYPE='ms'
+ENV='local'
+PORT=8091
+# Connect to Supabase via connection pooling
+DATABASE_URL="postgresql://postgres.oyxwfqktrpsivplqmhih:Nicodev21@aws-0-sa-east-1.pooler.supabase.com:5432/postgres"
+
+# Direct connection to the database. Used for migrations
+DIRECT_URL="postgresql://postgres.oyxwfqktrpsivplqmhih:Nicodev21@aws-0-sa-east-1.pooler.supabase.com:5432/postgres"
+GLOBAL_PREFIX='/v1'
+COMPONENT="data-sentinel:1.0.0"
+JWT_SECRET="9mZUYzQRdZm6S+Crfmlgfo7mxp/nmX9pnjjXXMKtXHGhwvT7FK+iTysTenPzT/0h3LfnIxSJNN2N/v5kkK0hOg=="
+
+# SMTP Configuration for email sending
+SMTP_HOST="mail.masteck.cl"
+SMTP_PORT=465
+SMTP_USER="dev@masteck.cl"
+SMTP_PASS="111"
