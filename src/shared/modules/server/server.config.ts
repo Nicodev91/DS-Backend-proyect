@@ -12,7 +12,13 @@ import { AppModule } from 'src/app.module';
 export class Server {
   async setup(): Promise<void> {
     EnvValues.get();
-    const app = await NestFactory.create(AppModule, { cors: true });
+    const app = await NestFactory.create(AppModule, { 
+      cors: {
+        origin: ['https://ds-front-proyectot.vercel.app'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+        credentials: true,
+      } 
+    });
     new ScalarClient().register(app);
     app.useLogger(app.get(Logger));
     app.use(helmet());
