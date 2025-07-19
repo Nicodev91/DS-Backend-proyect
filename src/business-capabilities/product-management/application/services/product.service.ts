@@ -315,27 +315,21 @@ export class ProductService {
       if (updateProductDto.price !== undefined) updateData.price = updateProductDto.price;
       // Si se proporciona un nuevo valor de stock, primero obtenemos el stock actual
       if (updateProductDto.stock !== undefined) {
-        // Obtenemos el producto actual para conocer su stock
+        // Obtenemos el producto actual solo para registrar el cambio en los logs
         const currentProduct = await this.prismaService.product.findUnique({
           where: { product_id: id },
           select: { stock: true }
         });
         
-        // Si no existe el producto, usamos directamente el valor proporcionado
-        // Si existe, sumamos el stock actual con el nuevo valor
-        if (!currentProduct) {
-          updateData.stock = updateProductDto.stock;
-        } else {
-          // Aseguramos que la suma se realice correctamente con paréntesis
-          updateData.stock = (currentProduct.stock || 0) + updateProductDto.stock;
-          
-          this.log.Information({
-            message: 'Stock actualizado',
-            payload: `ID: ${id}, Stock anterior: ${currentProduct.stock}, Nuevo stock: ${updateData.stock}`,
-            eventId: INFORMATION.USER_SERVICES,
-            context: this.context,
-          });
-        }
+        // Asignamos directamente el nuevo valor de stock sin sumar
+        updateData.stock = updateProductDto.stock;
+        
+        this.log.Information({
+          message: 'Stock actualizado',
+          payload: `ID: ${id}, Stock anterior: ${currentProduct?.stock || 0}, Nuevo stock: ${updateData.stock}`,
+          eventId: INFORMATION.USER_SERVICES,
+          context: this.context,
+        });
       }
       
       if (updateProductDto.description !== undefined) updateData.description = updateProductDto.description;
