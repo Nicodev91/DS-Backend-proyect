@@ -3,6 +3,7 @@ import { user } from '@prisma/client';
 import { ERROR, INFORMATION } from '@shared/environment/event-id.constants';
 import { LoggerFactory } from '@shared/modules/logger/logger-factory';
 import { PrismaService } from '../../../../modules/prisma/prisma.service';
+import { hash, compare } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -29,7 +30,7 @@ export class UserService {
         });
         throw new ConflictException('A user already exists with this email');
       }
-
+      const hashedPassword = await hash(data.password,10);
       // Generate the next user ID
       const nextUserId = await this.generateNextUserId();
 
@@ -41,7 +42,7 @@ export class UserService {
           rut: data.rut,
           email: data.email,
           phone_number: data.phone || null,
-          password: data.password,
+          password: hashedPassword,
           register_date: new Date(),
           user_type_id: 1, // Default user type
           updated_at: new Date(),
@@ -244,7 +245,7 @@ export class UserService {
    * @param email User's email
    * @returns The user if found, otherwise null
    */
-  async validateUser(email: string): Promise<user | null> {
+  async validateUser(email: string, password: string): Promise<user | null> {
     try {
       const user = await this.getUser(email);
       if (!user) {
@@ -255,7 +256,15 @@ export class UserService {
         });
         return null;
       }
-
+       const isPasswordValid = await compare(password, user.password as string);
+       if(!isPasswordValid){
+        this.log.Error({
+          message: 'Incorrect password',
+          eventId: ERROR.USER_SERVICES,
+          context: this.context,
+        });
+        return null;
+       }
       // Note: Password validation removed as the User model doesn't have a password field
       // This suggests authentication might be handled differently (e.g., via OTP)
       // For now, we'll just return the user if found

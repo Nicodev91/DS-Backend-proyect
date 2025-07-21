@@ -17,7 +17,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     password: string,
   ): Promise<{ id: number; email: string | null; createdAt: Date | null }> {
     try {
-      const user = await this.userService.validateUser(email);
+      const user = await this.userService.validateUser(email,password);
 
       if (!user) {
         throw new UnauthorizedException('Credenciales inválidas');
